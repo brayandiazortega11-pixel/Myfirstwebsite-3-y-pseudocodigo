@@ -1,0 +1,186 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+}
+
+/* 1. :is() */
+:is(section, aside) {
+    border: 4px solid black;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. :where() */
+:where(section, aside) p,
+:where(section, aside) label {
+    line-height: 1.3;
+}
+
+section { background-color: #FFFC00; color: #111; }
+aside { background-color: #9A0086; color: white; }
+
+.altura { min-height: 140px; height: auto; }
+
+/* 3. :required y :optional */
+.input-valida:required { border-left: 6px solid #FF8500; }
+.input-opcional:optional { border-left: 6px solid #48CAE4; background-color: rgba(255, 255, 255, 0.9); }
+
+/* 4. :valid e :invalid con mensajes dinámicos */
+.input-valida:valid {
+    border-color: #2EC4B6;
+    background-color: #E8F8F5;
+    box-shadow: 0 0 8px rgba(46, 196, 182, 0.6);
+}
+.input-valida:valid + .status-indicator::before {
+    content: "✓ Correo válido";
+    color: #0f5132;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    background: #d1e7dd;
+    border-radius: 4px;
+}
+
+.input-valida:invalid {
+    border-color: #E71D36;
+    background-color: #FDE8E9;
+}
+.input-valida:invalid:not(:placeholder-shown) + .status-indicator::before {
+    content: "✗ Correo incompleto";
+    color: #842029;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    background: #f8d7da;
+    border-radius: 4px;
+}
+
+/* 5. :in-range y :out-of-range */
+.input-rango:in-range {
+    border: 3px solid #2EC4B6;
+    background-color: #E8F8F5;
+    color: #0f5132;
+}
+.input-rango:in-range ~ .rango-msg::before {
+    content: "✓ Valor dentro de rango permitido (1 al 10)";
+    color: #0f5132;
+}
+
+.input-rango:out-of-range {
+    border: 3px solid #E71D36;
+    background-color: #FDE8E9;
+    color: #842029;
+    animation: agitar 0.3s ease-in-out infinite alternate;
+}
+.input-rango:out-of-range ~ .rango-msg::before {
+    content: "⚠ ¡Número fuera de rango! Debe ser entre 1 y 10";
+    color: #842029;
+}
+
+@keyframes agitar {
+    from { transform: translateX(-2px); }
+    to { transform: translateX(2px); }
+}
+
+/* 6. :placeholder-shown y su negación :not() */
+.input-placeholder:placeholder-shown {
+    border: 2px dashed #FFD166;
+    background-color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+}
+.input-placeholder:not(:placeholder-shown) {
+    border: 2px solid #06D6A0;
+    background-color: #ffffff;
+    font-style: normal;
+    color: #111;
+}
+
+/* 7. :enabled, :disabled y :default */
+.btn-action:enabled {
+    background-color: #111;
+    color: #FFFC00;
+    border: 2px solid #111;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-action:enabled:hover { background-color: #FFFC00; color: #111; }
+
+.btn-action:disabled {
+    background-color: #ccc;
+    color: #777;
+    border: 2px dashed #999;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.btn-action:default {
+    outline: 3px solid #FF8500;
+    outline-offset: 2px;
+}
+
+/* 8. :read-only y :read-write */
+.campo-readonly:read-only {
+    background-color: rgba(0, 0, 0, 0.35);
+    color: #FFD166;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    cursor: no-drop;
+}
+.campo-readonly:read-write { background-color: white; color: black; }
+
+/* 9. :checked */
+.check-potente:checked {
+    background-color: #00F5D4;
+    border-color: #00F5D4;
+    transform: scale(1.3);
+}
+
+/* 10. :has() -> Selector Relacional */
+aside:has(.check-potente:checked) {
+    background-color: #0B525B !important;
+    border-color: #00F5D4 !important;
+    box-shadow: 0 0 25px rgba(0, 245, 212, 0.8);
+    transform: translateY(-4px);
+}
+aside:has(.check-potente:checked) .tag-has-estado {
+    background-color: #00F5D4;
+    color: #111;
+    font-weight: bold;
+}
+
+section:has(.input-valida:invalid) { border-color: #E71D36; }
+
+/* 11. :not() */
+section:not(.sin-efecto):hover { filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35)); }
+
+.badge-code {
+    background: #000;
+    color: #FFFC00;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.72rem;
+    font-weight: bold;
+}
+
+.badge-code-aside {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.72rem;
+    font-weight: bold;
+}
+
+.tag-has-estado {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
